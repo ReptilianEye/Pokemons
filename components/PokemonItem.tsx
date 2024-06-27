@@ -1,9 +1,15 @@
 import { usePokemonDetailsQuery } from "@/hooks/usePokemonQuery";
-import { Pressable, View } from "react-native";
+import { Pressable } from "react-native";
 import { HStack, Image, Text, ThemeProvider } from "react-native-ficus-ui";
 import Toast from "react-native-toast-message";
 
-export default function PokemonItem({ url, onPress }: { url: string; onPress: () => void }) {
+export default function PokemonItem({
+  url,
+  onPress,
+}: {
+  url: string;
+  onPress: () => void;
+}) {
   const { data: pokemonDetails } = usePokemonDetailsQuery(url);
 
   return (
@@ -18,7 +24,7 @@ export default function PokemonItem({ url, onPress }: { url: string; onPress: ()
           onPress();
         }}
       >
-        <HStack alignItems={"center"}>
+        <HStack alignItems="center">
           <Image
             style={{
               width: 75,
@@ -26,7 +32,7 @@ export default function PokemonItem({ url, onPress }: { url: string; onPress: ()
             }}
             source={{ uri: pokemonDetails?.sprites.front_default }}
           />
-          <Text fontSize={"xl"}>{pokemonDetails?.name}</Text>
+          <Text fontSize="xl">{pokemonDetails?.name}</Text>
         </HStack>
       </Pressable>
     </ThemeProvider>

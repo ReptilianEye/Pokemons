@@ -1,9 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TPokemonDetails } from "./usePokemonQuery";
+import { type TPokemonDetails } from "./usePokemonQuery";
 
 const key = "favoritePokemon";
 export const useFavoritePokemon = () => {
-  const getFavoritePokemonFromStorage = async (): Promise<TPokemonDetails | undefined> => {
+  const getFavoritePokemonFromStorage = async (): Promise<
+    TPokemonDetails | undefined
+  > => {
     try {
       const pokemon = await AsyncStorage.getItem(key);
       return pokemon ? JSON.parse(pokemon) : undefined;

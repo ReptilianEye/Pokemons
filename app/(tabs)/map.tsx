@@ -1,8 +1,8 @@
 import AddPokemonModal from "@/components/AddPokemonModal";
-import React, { useState } from "react";
-import { Box, SafeAreaBox, Text, ThemeProvider, useDisclosure } from "react-native-ficus-ui";
+import { useState } from "react";
+import { ThemeProvider, useDisclosure } from "react-native-ficus-ui";
 import MapView, { Marker } from "react-native-maps";
-import { PokemonOnMap, usePokemonsOnMapContext } from "../context/PokemonOnMapContext";
+import { usePokemonsOnMapContext } from "../context/PokemonOnMapContext";
 
 function MapScreen() {
   const { pokemonsOnMap } = usePokemonsOnMapContext();
@@ -15,7 +15,6 @@ function MapScreen() {
         onLongPress={(e) => {
           setPosition(e.nativeEvent.coordinate);
           onOpen();
-          // setMarkers([...markers, e.nativeEvent.coordinate]);
         }}
         style={{
           width: "100%",
@@ -30,7 +29,11 @@ function MapScreen() {
             }}
           />
         ))}
-        <AddPokemonModal isOpen={isOpen} onClose={onClose} position={position} />
+        <AddPokemonModal
+          isOpen={isOpen}
+          onClose={onClose}
+          position={position}
+        />
       </MapView>
     </ThemeProvider>
   );

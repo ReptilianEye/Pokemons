@@ -1,6 +1,5 @@
 import { FlatList } from "react-native";
 
-import PokemonItem from "@/components/PokemonItem";
 import { usePokemonQuery } from "@/hooks/usePokemonQuery";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemeProvider } from "react-native-ficus-ui";

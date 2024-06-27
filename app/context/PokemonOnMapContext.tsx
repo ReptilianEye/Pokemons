@@ -12,7 +12,11 @@ const PokemonOnMapContext = createContext<{
   setPokemonsOnMap: () => {},
 });
 
-export function PokemonOnMapProvider({ children }: { children: React.ReactNode }) {
+export function PokemonOnMapProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [pokemonsOnMap, setPokemonsOnMap] = useState<PokemonOnMap[]>([]);
 
   return (

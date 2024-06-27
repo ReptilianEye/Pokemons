@@ -1,25 +1,16 @@
-import { useFavoritePokemon } from "@/hooks/useFavoritePokemon";
-import { TPokemonDetails } from "@/hooks/usePokemonQuery";
-import { Link, useFocusEffect } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Image } from "react-native";
-import { Box, Button, Center, SafeAreaBox, Text } from "react-native-ficus-ui";
+import { Link } from "expo-router";
+import { Image } from "react-native";
+import { Button, Center, SafeAreaBox, Text } from "react-native-ficus-ui";
+import { useFavoritePokemonContext } from "../context/FavoritePokemonContext";
 
 export default function FavoritePokemonScreen() {
-  const { getFavoritePokemonFromStorage, removeFavoritePokemonFromStorage } = useFavoritePokemon();
-  const [favoritePokemon, setFavoritePokemon] = useState<TPokemonDetails | undefined>(undefined);
-  useFocusEffect(
-    useCallback(() => {
-      getFavoritePokemonFromStorage().then((pokemon) => {
-        setFavoritePokemon(pokemon);
-      });
-    }, [])
-  );
+  const { favoritePokemon, removeFavoritePokemon } =
+    useFavoritePokemonContext();
   if (favoritePokemon) {
     return (
       <SafeAreaBox>
         <Center>
-          <Text fontSize={"4xl"}>Your favorite pokemon</Text>
+          <Text fontSize="4xl">Your favorite pokemon</Text>
           <Image
             source={{ uri: favoritePokemon.sprites.front_default }}
             style={{
@@ -28,12 +19,7 @@ export default function FavoritePokemonScreen() {
             }}
           />
           <Text>{favoritePokemon.name}</Text>
-          <Button
-            onPress={() => {
-              removeFavoritePokemonFromStorage();
-              setFavoritePokemon(undefined);
-            }}
-          >
+          <Button onPress={removeFavoritePokemon}>
             Remove Favorite Pokemon
           </Button>
         </Center>
@@ -44,7 +30,7 @@ export default function FavoritePokemonScreen() {
     <SafeAreaBox>
       <Center>
         <Text>No Favorite Pokemon</Text>
-        <Link href={"/"}>Select one</Link>
+        <Link href="/">Select one</Link>
       </Center>
     </SafeAreaBox>
   );

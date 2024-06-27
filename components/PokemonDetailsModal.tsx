@@ -1,13 +1,11 @@
-import { useFavoritePokemon } from "@/hooks/useFavoritePokemon";
-import { TPokemonDetails } from "@/hooks/usePokemonQuery";
+import { useFavoritePokemonContext } from "@/app/context/FavoritePokemonContext";
+import { type TPokemonDetails } from "@/hooks/usePokemonQuery";
 import { useEffect, useState } from "react";
 import {
-  Box,
   Button,
   Center,
   Divider,
   Flex,
-  HStack,
   Image,
   Modal,
   Text,
@@ -22,20 +20,16 @@ export default function PokemonModal({
   onClose: () => void;
   pokemonDetails: TPokemonDetails;
 }) {
-  const {
-    getFavoritePokemonFromStorage,
-    saveFavoritePokemonToStorage,
-    removeFavoritePokemonFromStorage,
-  } = useFavoritePokemon();
-  const [liked, setLiked] = useState(false);
+  const { favoritePokemon, saveFavoritePokemon, removeFavoritePokemon } =
+    useFavoritePokemonContext();
+  const [liked, setLiked] = useState(
+    favoritePokemon && favoritePokemon.name === pokemonDetails.name,
+  );
+
   useEffect(() => {
-    getFavoritePokemonFromStorage().then((favoritePokemon) => {
-      setLiked(favoritePokemon?.name === pokemonDetails.name);
-    });
-  }, []);
-  useEffect(() => {
-    if (liked) saveFavoritePokemonToStorage(pokemonDetails);
-    else removeFavoritePokemonFromStorage();
+    if (!isOpen) return;
+    if (liked) saveFavoritePokemon(pokemonDetails);
+    else removeFavoritePokemon();
   }, [liked]);
 
   return (
@@ -59,7 +53,7 @@ export default function PokemonModal({
             }}
             source={{ uri: pokemonDetails?.sprites.front_default }}
           />
-          <Text textAlign={"center"} fontSize={"4xl"}>
+          <Text textAlign="center" fontSize="4xl">
             {pokemonDetails?.name}
           </Text>
         </Center>

@@ -1,21 +1,8 @@
-import { useFavoritePokemon } from "@/hooks/useFavoritePokemon";
-import { TPokemonDetails, usePokemonQuery } from "@/hooks/usePokemonQuery";
-import React, { useEffect, useState } from "react";
-import { FlatList, SafeAreaView, View } from "react-native";
-import {
-  Button,
-  Center,
-  Divider,
-  Flex,
-  HStack,
-  Image,
-  Modal,
-  Text,
-  ThemeProvider,
-} from "react-native-ficus-ui";
+import { usePokemonQuery } from "@/hooks/usePokemonQuery";
+import { FlatList, SafeAreaView } from "react-native";
+import { Button, Center, HStack, Modal, Text } from "react-native-ficus-ui";
 import PokemonItem from "./PokemonItem";
 import { usePokemonsOnMapContext } from "@/app/context/PokemonOnMapContext";
-import Toast from "react-native-toast-message";
 export default function AddPokemonModal({
   isOpen,
   onClose,
@@ -30,12 +17,12 @@ export default function AddPokemonModal({
   return (
     <SafeAreaView>
       <Center>
-        <Modal isOpen={isOpen} borderRadius={10} h={"90%"}>
-          <HStack alignItems={"center"} spacing={15} m={1}>
-            <Text fontSize={"xl"} textAlign={"center"}>
+        <Modal isOpen={isOpen} borderRadius={10} h="90%">
+          <HStack alignItems="center" spacing={15} m={1}>
+            <Text fontSize="xl" textAlign="center">
               Which pokemon did you catch here?
             </Text>
-            <Button onPress={onClose} colorScheme={"red"}>
+            <Button onPress={onClose} colorScheme="red">
               Cancel
             </Button>
           </HStack>
@@ -47,8 +34,10 @@ export default function AddPokemonModal({
                   url={item.url}
                   onPress={() => {
                     onClose();
-
-                    setPokemonsOnMap((prev) => [...prev, { ...position, detailsUrl: item.url }]);
+                    setPokemonsOnMap((prev) => [
+                      ...prev,
+                      { ...position, detailsUrl: item.url },
+                    ]);
                   }}
                 />
               )}
