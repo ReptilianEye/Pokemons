@@ -8,17 +8,22 @@ export type TPokemonDetails = {
     front_default: string;
   };
 };
-const fetchPokemons = async ({ pageParam = 0 }): Promise<{ url: string }[]> =>
-  (await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${pageParam}`))
+const fetchPokemons = async ({ pageParam = 0 }): Promise<{ url: string }[]> => {
+  // console.log(pageParam);
+  return (await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${pageParam}`))
     .json()
     .then((data) => data.results);
+};
 
-export const usePokemonQuery = ({ limit = 10 }: { limit?: number; offset?: number }) => {
+export const usePokemonQuery = ({ limit = 10 }: { limit?: number }) => {
   const { data, hasNextPage, isLoading, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ["pokemons", limit],
     queryFn: fetchPokemons,
     initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => (lastPage.length > 0 ? pages.length + 1 : undefined),
+    getNextPageParam: (lastPage, _pages, lastPageParam) => {
+      // console.log(lastPageParam);
+      return lastPage.length > 0 ? lastPageParam + limit : undefined;
+    },
   });
   const flattenData = useMemo(() => data?.pages.flatMap((page) => page) || [], [data?.pages]);
   const loadNext = useCallback(() => {

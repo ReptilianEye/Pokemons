@@ -1,17 +1,24 @@
-import React from "react";
-import { PokemonUrl } from "@/app/(tabs)";
-import { Image } from "react-native";
 import { usePokemonDetailsQuery } from "@/hooks/usePokemonQuery";
-import { Center, Pressable, Text, ThemeProvider, useDisclosure } from "react-native-ficus-ui";
-import PokemonModal from "./PokemonModal";
+import { Pressable, View } from "react-native";
+import { HStack, Image, Text, ThemeProvider } from "react-native-ficus-ui";
+import Toast from "react-native-toast-message";
 
-function PokemonItem({ url }: PokemonUrl) {
-  const { data: pokemonDetails, isLoading, error } = usePokemonDetailsQuery(url);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export default function PokemonItem({ url, onPress }: { url: string; onPress: () => void }) {
+  const { data: pokemonDetails } = usePokemonDetailsQuery(url);
+
   return (
     <ThemeProvider>
-      <Center w={"50%"}>
-        <Pressable onPress={onOpen}>
+      <Pressable
+        onPress={() => {
+          Toast.show({
+            type: "success",
+            text1: "Pokemon added to map",
+            text2: pokemonDetails?.name,
+          });
+          onPress();
+        }}
+      >
+        <HStack alignItems={"center"}>
           <Image
             style={{
               width: 75,
@@ -19,15 +26,9 @@ function PokemonItem({ url }: PokemonUrl) {
             }}
             source={{ uri: pokemonDetails?.sprites.front_default }}
           />
-          <Text textAlign={"center"}>{pokemonDetails?.name}</Text>
-        </Pressable>
-      </Center>
-
-      {pokemonDetails && (
-        <PokemonModal isOpen={isOpen} onClose={onClose} pokemonDetails={pokemonDetails} />
-      )}
+          <Text fontSize={"xl"}>{pokemonDetails?.name}</Text>
+        </HStack>
+      </Pressable>
     </ThemeProvider>
   );
 }
-
-export default PokemonItem;
